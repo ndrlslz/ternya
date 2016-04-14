@@ -1,1 +1,1 @@
-from ternya.exceptions import ConfigError
+from .exceptions import (ConfigError, ImportModulesError)

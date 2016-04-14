@@ -18,3 +18,9 @@ class ConfigError(Error):
     def __init__(self, msg):
         message = ["config file error.", msg]
         Error.__init__(self, " ".join(message))
+
+
+class ImportModulesError(Error):
+    def __init__(self, msg):
+        message = ["import customer modules error", msg]
+        Error.__init__(self, " ".join(message))

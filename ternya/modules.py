@@ -1,6 +1,16 @@
+"""
+ternya.modules
+==============
+
+This module import customer's service module.
+"""
 import glob
 import os
+import logging
+
 from ternya import ImportModulesError
+
+log = logging.getLogger(__name__)
 
 
 class Modules(object):
@@ -38,9 +48,9 @@ class ServiceModules(Modules):
     def import_modules(self):
         """Import customer's service module."""
         modules = self.get_modules()
+        log.info("import service modules: " + str(modules))
         try:
             for module in modules:
-                print(module)
                 __import__(module)
         except ImportError as error:
             raise ImportModulesError(error.msg)

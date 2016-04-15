@@ -1,3 +1,9 @@
+"""
+ternya.config
+=============
+
+This module read customer's config file.
+"""
 from configparser import ConfigParser, NoSectionError, NoOptionError
 from ternya import ConfigError
 import logging
@@ -9,9 +15,14 @@ class Config:
     """
     This class Read Configuration
     """
+
     def __init__(self, config_path):
         self.config = ConfigParser()
         self.config.read(config_path)
+        self.method_mapping = {
+            str: self.get_str,
+            int: self.get_int
+        }
         self.project_abspath = self.get_config_value("default", "project_abspath")
         self.packages_scan = self.get_config_value("default", "packages_scan")
         self.openstack_host = self.get_config_value("default", "openstack_host")
@@ -25,13 +36,8 @@ class Config:
         :param key: config file's key under section. i.e packages_scan
         :param return_type: (optional) value type, default is str.
         """
-        method_mapping = {
-            str: self.get_str,
-            int: self.get_int
-        }
-
         try:
-            value = method_mapping[return_type](section, key)
+            value = self.method_mapping[return_type](section, key)
         except NoSectionError as e:
             raise ConfigError(e.message)
         except NoOptionError as e:

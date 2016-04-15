@@ -1,3 +1,9 @@
+"""
+ternya.exceptions
+=================
+
+This module contains the set of Ternya's exceptions
+"""
 import logging
 
 log = logging.getLogger(__name__)
@@ -22,5 +28,11 @@ class ConfigError(Error):
 
 class ImportModulesError(Error):
     def __init__(self, msg):
-        message = ["import customer modules error", msg]
+        message = ["import customer modules error.", msg]
+        Error.__init__(self, " ".join(message))
+
+
+class AnnotationError(Error):
+    def __init__(self, msg):
+        message = ["ternya annotation error.", msg]
         Error.__init__(self, " ".join(message))

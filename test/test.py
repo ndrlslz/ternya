@@ -1,6 +1,8 @@
 from ternya.annotation import nova
 
 
-@nova("123")
+@nova("compute.metrics.update")
 def test(body, message):
-    print("1")
+    print("this is service process.")
+    print(body['event_type'])
+    print(body)

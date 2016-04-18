@@ -30,5 +30,6 @@ def nova_process(body, message):
 
 def default_process(body, message):
     event_type = body['event_type']
-    log.info("event_type:" + event_type)
-    log.info(body)
+    log.debug("event_type:" + event_type)
+    log.debug(body)
+    message.ack()

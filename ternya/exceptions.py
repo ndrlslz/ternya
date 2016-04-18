@@ -36,3 +36,9 @@ class AnnotationError(Error):
     def __init__(self, msg):
         message = ["ternya annotation error.", msg]
         Error.__init__(self, " ".join(message))
+
+
+class MQConnectionError(Error):
+    def __init__(self, msg):
+        message = ["mq connection error.", msg]
+        Error.__init__(self, " ".join(message))

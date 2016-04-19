@@ -37,8 +37,19 @@ from ternya.modules import ServiceModules
 #     conn.drain_events()
 
 from ternya.ternya import Ternya
+#
 
 ternya = Ternya()
 ternya.read("config.ini")
 ternya.init_modules()
 ternya.init_mq()
+
+
+# from ternya.annotation import nova
+#
+#
+# @nova("compute.metrics.test")
+# def test():
+#     print("this is not wildcard process")
+#
+# test()

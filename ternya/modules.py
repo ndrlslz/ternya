@@ -39,6 +39,8 @@ class ServiceModules(Modules):
         Traverse all files under folder packages_scan which set by customer.
         And get all modules name.
         """
+        if not self.project_abspath:
+            raise TypeError("project_abspath can not be empty.")
         packages_abspath = self.get_package_abspath()
         for package_abspath in packages_abspath:
             self.get_module_name(package_abspath)

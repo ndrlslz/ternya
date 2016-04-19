@@ -7,13 +7,17 @@ This module define the annotation
 import functools
 import types
 import logging
+import re
 
 from ternya import AnnotationError
 from ternya import Openstack
 
 log = logging.getLogger(__name__)
 
+# customer's nova process that not include wildcard.
 nova_customer_process = {}
+# customer's nova process that include wildcard.
+nova_customer_process_wildcard = {}
 
 
 def nova(*arg):
@@ -26,13 +30,19 @@ def nova(*arg):
     event_type = arg[0]
 
     def decorator(func):
-        nova_customer_process[event_type] = func
+        if event_type.find("*") != -1:
+            event_type_str = event_type.replace(".", "\.").replace("*", "\w*?")
+            event_type_pattern = re.compile(event_type_str)
+            nova_customer_process_wildcard[event_type_pattern] = func
+        else:
+            nova_customer_process[event_type] = func
         log.info("add function {0} to process event_type:{1}".format(func.__name__, event_type))
 
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
             func(*args, **kwargs)
-            return wrapper
+
+        return wrapper
 
     return decorator
 

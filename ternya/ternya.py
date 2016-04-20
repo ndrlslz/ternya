@@ -7,6 +7,7 @@ This module do main work.
 import time
 import logging
 from amqp import ConnectionForced
+from multiprocessing import Pool, Process
 
 from ternya import Config, ServiceModules, MQ, Openstack
 from ternya import ProcessFactory
@@ -19,8 +20,17 @@ class Ternya:
     """
     Ternya main class.
 
-    TODO
-    Need doc here.
+    First, you need to use ternya to read your config file.
+    Then invoke work() to start ternya.
+
+    *Example usage*::
+
+        >>> from ternya.ternya import Ternya
+        >>>
+        >>> if __name__ == "__main__":
+        >>>     ternya = Ternya()
+        >>>     ternya.read("config.ini")
+        >>>     ternya.work()
     """
 
     def __init__(self):
@@ -35,25 +45,49 @@ class Ternya:
         self.config = Config(path)
 
     def work(self):
-        pass
+        """
+        Start ternya work.
+
+        First, import customer's service modules.
+        Second, init openstack mq connection.
+        """
+        self.init_modules()
+        self.init_mq()
 
     def init_mq(self):
         """Init connection with openstack mq."""
+        # pool = Pool(5)
+        # pool.apply_async(self.init_nova_mq)
+        # pool.close()
+        # process = Process(target=self.init_nova_mq)
+        # process.start()
         self.init_nova_mq()
+        # self.init_cinder_mq()
 
     def init_modules(self):
         """Import customer's service modules."""
         if not self.config:
             raise ValueError("please read your config file.")
 
+        log.debug("begin to import customer's service modules.")
         modules = ServiceModules(self.config)
         modules.import_modules()
+        log.debug("end to import customer's service modules.")
 
     def init_nova_mq(self):
+        """
+        Init openstack nova mq
+
+        1. Check if enable listening nova notification
+        2. Create mq connection
+        3. Create consumer
+        4. keep a auto-reconnect connection
+        """
         if not enable_component_notification(self.config, Openstack.Nova):
             log.debug("disable listening nova notification")
             return
-        log.debug("enable listening nova notification")
+
+        log.debug("enable listening openstack nova notification.")
         nova_mq = MQ(self.config.nova_mq_user,
                      self.config.nova_mq_password,
                      self.config.nova_mq_host,
@@ -66,6 +100,33 @@ class Ternya:
             nova_mq.create_consumer(nova_conn)
 
         TernyaConnection(self, nova_conn, Openstack.Nova).connect()
+
+    def init_cinder_mq(self):
+        """
+        Init openstack cinder mq
+
+        1. Check if enable listening nova notification
+        2. Create mq connection
+        3. Create consumer
+        4. keep a auto-reconnect connection
+        """
+        if not enable_component_notification(self.config, Openstack.Cinder):
+            log.debug("disable listening cinder notification")
+            return
+
+        log.debug("enable listening openstack cinder notification.")
+        cinder_mq = MQ(self.config.cinder_mq_user,
+                       self.config.cinder_mq_password,
+                       self.config.cinder_mq_host,
+                       self.config.cinder_mq_exchange,
+                       self.config.cinder_mq_queue,
+                       ProcessFactory.process(Openstack.Cinder))
+
+        cinder_conn = cinder_mq.create_connection()
+        for i in range(self.config.cinder_mq_consumer_count):
+            cinder_mq.create_consumer(cinder_conn)
+
+        TernyaConnection(self, cinder_conn, Openstack.Cinder).connect()
 
 
 class TernyaConnection:
@@ -111,3 +172,5 @@ def enable_component_notification(config, openstack_component):
     """
     if openstack_component == Openstack.Nova:
         return True if config.nova_mq_host else False
+    elif openstack_component == Openstack.Cinder:
+        return True if config.cinder_mq_host else False

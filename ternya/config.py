@@ -21,24 +21,24 @@ class Config:
         self.config.read(config_path)
         self.method_mapping = {
             str: self.get_str,
-            int: self.get_int
+            int: self.get_int,
+            bool: self.get_bool
         }
         # default
         self.project_abspath = self.get_config_value("default", "project_abspath", str)
         self.packages_scan = self.get_config_value("default", "packages_scan", str)
+        self.mq_user = self.get_config_value("default", "mq_user", str)
+        self.mq_password = self.get_config_value("default", "mq_password", str)
+        self.mq_host = self.get_config_value("default", "mq_host", str)
         # nova
-        self.nova_mq_user = self.get_config_value("nova", "mq_user", str)
-        self.nova_mq_password = self.get_config_value("nova", "mq_password", str)
-        self.nova_mq_host = self.get_config_value("nova", "mq_host", str)
         self.nova_mq_exchange = "nova"
         self.nova_mq_queue = "ternya_nova_queue"
+        self.listen_nova_notification = self.get_config_value("nova", "listen_notification", bool)
         self.nova_mq_consumer_count = self.get_config_value("nova", "mq_consumer_count", int)
         # cinder
-        self.cinder_mq_user = self.get_config_value("cinder", "mq_user", str)
-        self.cinder_mq_password = self.get_config_value("cinder", "mq_password", str)
-        self.cinder_mq_host = self.get_config_value("cinder", "mq_host", str)
         self.cinder_mq_exchange = "cinder"
         self.cinder_mq_queue = "ternya_cinder_queue"
+        self.listen_cinder_notification = self.get_config_value("cinder", "listen_notification", bool)
         self.cinder_mq_consumer_count = self.get_config_value("cinder", "mq_consumer_count", int)
 
     def get_config_value(self, section, key, return_type: type):
@@ -61,3 +61,6 @@ class Config:
 
     def get_str(self, section, key) -> str:
         return self.config.get(section, key, fallback="")
+
+    def get_bool(self, section, key) -> bool:
+        return self.config.getboolean(section, key, fallback=False)

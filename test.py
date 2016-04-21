@@ -37,11 +37,12 @@ from ternya.modules import ServiceModules
 #     conn.drain_events()
 
 from ternya.ternya import Ternya
-from multiprocessing import Process
+from multiprocessing import Process, freeze_support
 
 #
 
 if __name__ == "__main__":
+    freeze_support()
     ternya = Ternya()
     ternya.read("config.ini")
     ternya.work()

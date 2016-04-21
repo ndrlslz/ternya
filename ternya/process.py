@@ -40,7 +40,7 @@ def nova_process(body, message):
     else:
         matched = False
         process_wildcard = None
-        for pattern in nova_customer_process_wildcard:
+        for pattern in nova_customer_process_wildcard.keys():
             if pattern.match(event_type):
                 process_wildcard = nova_customer_process_wildcard.get(pattern)
                 matched = True

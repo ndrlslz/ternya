@@ -81,6 +81,7 @@ class Ternya:
     def init_consumer(self, mq):
         self.init_nova_consumer(mq)
         self.init_cinder_consumer(mq)
+        self.init_neutron_consumer(mq)
 
     def init_nova_consumer(self, mq):
         """
@@ -105,7 +106,7 @@ class Ternya:
         """
         Init openstack cinder mq
 
-        1. Check if enable listening nova notification
+        1. Check if enable listening cinder notification
         2. Create consumer
 
         :param mq: class ternya.mq.MQ
@@ -120,6 +121,26 @@ class Ternya:
                                ProcessFactory.process(Openstack.Cinder))
 
         log.debug("enable listening openstack cinder notification.")
+
+    def init_neutron_consumer(self, mq):
+        """
+        Init openstack neutron mq
+
+        1. Check if enable listening neutron notification
+        2. Create consumer
+
+        :param mq: class ternya.mq.MQ
+        """
+        if not enable_component_notification(self.config, Openstack.Neutron):
+            log.debug("disable listening neutron notification")
+            return
+
+        for i in range(self.config.neutron_mq_consumer_count):
+            mq.create_consumer(self.config.neutron_mq_exchange,
+                               self.config.neutron_mq_queue,
+                               ProcessFactory.process(Openstack.Neutron))
+
+        log.debug("enable listening openstack neutron notification.")
 
 
 class TernyaConnection:
@@ -163,3 +184,5 @@ def enable_component_notification(config, openstack_component):
         return True if config.listen_nova_notification else False
     elif openstack_component == Openstack.Cinder:
         return True if config.listen_cinder_notification else False
+    elif openstack_component == Openstack.Neutron:
+        return True if config.listen_neutron_notification else False

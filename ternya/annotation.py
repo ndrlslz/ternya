@@ -18,15 +18,24 @@ log = logging.getLogger(__name__)
 nova_customer_process = {}
 # customer's nova process that include wildcard.
 nova_customer_process_wildcard = {}
+
 # customer's cinder process that not include wildcard.
 cinder_customer_process = {}
 # customer's cinder process that include wildcard.
 cinder_customer_process_wildcard = {}
 
+# customer's neutron process that not include woldcard.
+neutron_customer_process = {}
+# customer's neutron process that include wildcard.
+neutron_customer_process_wildcard = {}
+
 
 def nova(*arg):
     """
     Nova annotation for adding function to process nova notification.
+
+    if event_type include wildcard, will put {pattern: function} into process_wildcard dict
+    else will put {event_type: function} into process dict
 
     :param arg: event_type of notification
     """
@@ -55,6 +64,9 @@ def cinder(*arg):
     """
     Cinder annotation for adding function to process cinder notification.
 
+    if event_type include wildcard, will put {pattern: function} into process_wildcard dict
+    else will put {event_type: function} into process dict
+
     :param arg: event_type of notification
     """
     check_event_type(Openstack.Cinder, *arg)
@@ -67,6 +79,36 @@ def cinder(*arg):
             cinder_customer_process_wildcard[event_type_pattern] = func
         else:
             cinder_customer_process[event_type] = func
+        log.info("add function {0} to process event_type:{1}".format(func.__name__, event_type))
+
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            func(*args, **kwargs)
+
+        return wrapper
+
+    return decorator
+
+
+def neutron(*arg):
+    """
+    Neutron annotation for adding function to process neutron notification.
+
+    if event_type include wildcard, will put {pattern: function} into process_wildcard dict
+    else will put {event_type: function} into process dict
+
+    :param arg: event_type of notification
+    """
+    check_event_type(Openstack.Neutron, *arg)
+    event_type = arg[0]
+
+    def decorator(func):
+        if event_type.find("*") != -1:
+            event_type_str = event_type.replace(".", "\.").replace("*", "\w*?")
+            event_type_pattern = re.compile(event_type_str)
+            neutron_customer_process_wildcard[event_type_pattern] = func
+        else:
+            neutron_customer_process[event_type] = func
         log.info("add function {0} to process event_type:{1}".format(func.__name__, event_type))
 
         @functools.wraps(func)

@@ -40,6 +40,11 @@ class Config:
         self.cinder_mq_queue = "ternya_cinder_queue"
         self.listen_cinder_notification = self.get_config_value("cinder", "listen_notification", bool)
         self.cinder_mq_consumer_count = self.get_config_value("cinder", "mq_consumer_count", int)
+        # neutron
+        self.neutron_mq_exchange = "neutron"
+        self.neutron_mq_queue = "ternya_neutron_queue"
+        self.listen_neutron_notification = self.get_config_value("neutron", "listen_notification", bool)
+        self.neutron_mq_consumer_count = self.get_config_value("neutron", "mq_consumer_count", int)
 
     def get_config_value(self, section, key, return_type: type):
         """Read customer's config value by section and key.

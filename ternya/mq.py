@@ -19,10 +19,6 @@ class MQ:
     :keyword mq_user: openstack mq's username.
     :keyword mq_password: openstack mq's password.
     :keyword mq_host: openstack mq's host ip.
-    # :keyword exchange_name: openstack exchange your queue need to binds.
-    # :keyword queue_name: openstack queue name you defined.
-    # :keyword process: process method to deal with notifications.
-    # :keyword consumer_count: (optional) defined consumer count to receive message from the same queue.
     """
 
     def __init__(self, mq_user, mq_password, mq_host):
@@ -30,10 +26,6 @@ class MQ:
         self.mq_password = mq_password
         self.mq_host = mq_host
         self.connection = None
-        # self.exchange_name = exchange_name
-        # self.queue_name = queue_name
-        # self.process = process
-        # self.consumer_count = consumer_count
 
     def __repr__(self):
         return "user={0},password={1},host={2}".format(

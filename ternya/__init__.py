@@ -4,7 +4,7 @@ from .config import Config
 from .mq import MQ
 from .modules import ServiceModules
 from .process import ProcessFactory
-
+from .annotation import nova, cinder, neutron
 
 import logging
 

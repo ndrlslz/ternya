@@ -45,13 +45,18 @@ class Config:
         self.neutron_mq_queue = "ternya_neutron_queue"
         self.listen_neutron_notification = self.get_config_value("neutron", "listen_notification", bool)
         self.neutron_mq_consumer_count = self.get_config_value("neutron", "mq_consumer_count", int)
+        # glance
+        self.glance_mq_exchange = "glance"
+        self.glance_mq_queue = "ternya_glance_queue"
+        self.listen_glance_notification = self.get_config_value("glance", "listen_notification", bool)
+        self.glance_mq_consumer_count = self.get_config_value("glance", "mq_consumer_count", int)
 
     def get_config_value(self, section, key, return_type: type):
         """Read customer's config value by section and key.
 
         :param section: config file's section. i.e [default]
         :param key: config file's key under section. i.e packages_scan
-        :param return_type: (optional) value type, default is str.
+        :param return_type: return value type, str | int | bool.
         """
         try:
             value = self.method_mapping[return_type](section, key)

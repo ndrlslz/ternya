@@ -82,6 +82,7 @@ class Ternya:
         self.init_nova_consumer(mq)
         self.init_cinder_consumer(mq)
         self.init_neutron_consumer(mq)
+        self.init_glance_consumer(mq)
 
     def init_nova_consumer(self, mq):
         """
@@ -142,6 +143,26 @@ class Ternya:
 
         log.debug("enable listening openstack neutron notification.")
 
+    def init_glance_consumer(self, mq):
+        """
+        Init openstack glance mq
+
+        1. Check if enable listening glance notification
+        2. Create consumer
+
+        :param mq: class ternya.mq.MQ
+        """
+        if not enable_component_notification(self.config, Openstack.Glance):
+            log.debug("disable listening glance notification")
+            return
+
+        for i in range(self.config.glance_mq_consumer_count):
+            mq.create_consumer(self.config.glance_mq_exchange,
+                               self.config.glance_mq_queue,
+                               ProcessFactory.process(Openstack.Glance))
+
+        log.debug("enable listening openstack glance notification.")
+
 
 class TernyaConnection:
     """
@@ -186,3 +207,5 @@ def enable_component_notification(config, openstack_component):
         return True if config.listen_cinder_notification else False
     elif openstack_component == Openstack.Neutron:
         return True if config.listen_neutron_notification else False
+    elif openstack_component == Openstack.Glance:
+        return True if config.listen_glance_notification else False

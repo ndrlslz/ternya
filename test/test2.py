@@ -1,4 +1,4 @@
-from ternya import nova, cinder, neutron
+from ternya import nova, cinder, neutron, glance
 
 
 @nova("compute.metrics.update")
@@ -25,5 +25,12 @@ def test2(body, message):
 @neutron("network.delete.*")
 def test3(body, message):
     print("this is neutron process")
+    print(body['event_type'])
+    print(body)
+
+
+@glance("image.create")
+def test4(body, message):
+    print("this is glance process")
     print(body['event_type'])
     print(body)

@@ -14,25 +14,40 @@ from ternya import Openstack
 
 log = logging.getLogger(__name__)
 
-# customer's nova process that not include wildcard.
+# customer's nova process which not include wildcard.
 nova_customer_process = {}
-# customer's nova process that include wildcard.
+# customer's nova process which include wildcard.
 nova_customer_process_wildcard = {}
 
-# customer's cinder process that not include wildcard.
+# customer's cinder process which not include wildcard.
 cinder_customer_process = {}
-# customer's cinder process that include wildcard.
+# customer's cinder process which include wildcard.
 cinder_customer_process_wildcard = {}
 
-# customer's neutron process that not include wildcard.
+# customer's neutron process which not include wildcard.
 neutron_customer_process = {}
-# customer's neutron process that include wildcard.
+# customer's neutron process which include wildcard.
 neutron_customer_process_wildcard = {}
 
-# customer's glance process that not include wildcard.
+# customer's glance process which not include wildcard.
 glance_customer_process = {}
-# customer's glance process that include wildcard.
+# customer's glance process which include wildcard.
 glance_customer_process_wildcard = {}
+
+# customer's swift process which not include wildcard.
+swift_customer_process = {}
+# customer's swift process which include wildcard.
+swift_customer_process_wildcard = {}
+
+# customer's keystone process which not include wildcard.
+keystone_customer_process = {}
+# customer's swift process which include wildcard.
+keystone_customer_process_wildcard = {}
+
+# customer's heat process which not include wildcard.
+heat_customer_process = {}
+# customer's heat process which include wildcard.
+heat_customer_process_wildcard = {}
 
 
 def nova(*arg):
@@ -140,6 +155,93 @@ def glance(*arg):
             glance_customer_process_wildcard[event_type_pattern] = func
         else:
             glance_customer_process[event_type] = func
+        log.info("add function {0} to process event_type:{1}".format(func.__name__, event_type))
+
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            func(*args, **kwargs)
+
+        return wrapper
+
+    return decorator
+
+
+def swift(*arg):
+    """
+    Swift annotation for adding function to process swift notification.
+
+    if event_type include wildcard, will put {pattern: function} into process_wildcard dict
+    else will put {event_type: function} into process dict
+
+    :param arg: event_type of notification
+    """
+    check_event_type(Openstack.Swift, *arg)
+    event_type = arg[0]
+
+    def decorator(func):
+        if event_type.find("*") != -1:
+            event_type_pattern = pre_compile(event_type)
+            swift_customer_process_wildcard[event_type_pattern] = func
+        else:
+            swift_customer_process[event_type] = func
+        log.info("add function {0} to process event_type:{1}".format(func.__name__, event_type))
+
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            func(*args, **kwargs)
+
+        return wrapper
+
+    return decorator
+
+
+def keystone(*arg):
+    """
+    Swift annotation for adding function to process keystone notification.
+
+    if event_type include wildcard, will put {pattern: function} into process_wildcard dict
+    else will put {event_type: function} into process dict
+
+    :param arg: event_type of notification
+    """
+    check_event_type(Openstack.Keystone, *arg)
+    event_type = arg[0]
+
+    def decorator(func):
+        if event_type.find("*") != -1:
+            event_type_pattern = pre_compile(event_type)
+            keystone_customer_process_wildcard[event_type_pattern] = func
+        else:
+            keystone_customer_process[event_type] = func
+        log.info("add function {0} to process event_type:{1}".format(func.__name__, event_type))
+
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            func(*args, **kwargs)
+
+        return wrapper
+
+    return decorator
+
+
+def heat(*arg):
+    """
+    Heat annotation for adding function to process heat notification.
+
+    if event_type include wildcard, will put {pattern: function} into process_wildcard dict
+    else will put {event_type: function} into process dict
+
+    :param arg: event_type of notification
+    """
+    check_event_type(Openstack.Heat, *arg)
+    event_type = arg[0]
+
+    def decorator(func):
+        if event_type.find("*") != -1:
+            event_type_pattern = pre_compile(event_type)
+            heat_customer_process_wildcard[event_type_pattern] = func
+        else:
+            heat_customer_process[event_type] = func
         log.info("add function {0} to process event_type:{1}".format(func.__name__, event_type))
 
         @functools.wraps(func)

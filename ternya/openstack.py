@@ -13,3 +13,5 @@ class Openstack(Enum):
     Neutron = "neutron"
     Glance = "glance"
     Swift = "swift"
+    Keystone = "keystone"
+    Heat = "heat"

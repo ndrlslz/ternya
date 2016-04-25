@@ -50,6 +50,21 @@ class Config:
         self.glance_mq_queue = "ternya_glance_queue"
         self.listen_glance_notification = self.get_config_value("glance", "listen_notification", bool)
         self.glance_mq_consumer_count = self.get_config_value("glance", "mq_consumer_count", int)
+        # swift
+        self.swift_mq_exchange = "swift"
+        self.swift_mq_queue = "ternya_swift_queue"
+        self.listen_swift_notification = self.get_config_value("swift", "listen_notification", bool)
+        self.swift_mq_consumer_count = self.get_config_value("swift", "mq_consumer_count", int)
+        # keystone
+        self.keystone_mq_exchange = "keystone"
+        self.keystone_mq_queue = "ternya_keystone_queue"
+        self.listen_keystone_notification = self.get_config_value("keystone", "listen_notification", bool)
+        self.keystone_mq_consumer_count = self.get_config_value("keystone", "mq_consumer_count", int)
+        # heat
+        self.heat_mq_exchange = "heat"
+        self.heat_mq_queue = "ternya_heat_queue"
+        self.listen_heat_notification = self.get_config_value("heat", "listen_notification", bool)
+        self.heat_mq_consumer_count = self.get_config_value("heat", "mq_consumer_count", int)
 
     def get_config_value(self, section, key, return_type: type):
         """Read customer's config value by section and key.

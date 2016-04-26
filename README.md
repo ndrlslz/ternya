@@ -1,5 +1,5 @@
 # ternya - Openstack notification library for Python
----
+
 | Version    | 0.1.2  |
 | --------   | -----  |
 | Blog       |        |
@@ -8,18 +8,19 @@
 | Keywords   | openstack, notification, python, amqp |
 
 ## About
----
+
 ternya is a openstack notification library for python.
+
 The aim of ternya is to receive openstack notification and deal with notification easily.
 
 
 ## Requirements
----
-* python 3
-* works on Linux, Windows. (not tested on Mac OS)
+
+* Python 3
+* Works on Linux, Windows. (not tested on Mac OS)
 
 ## Quick overview
----
+
 ### start ternya
 
 ```python
@@ -43,7 +44,7 @@ def test2(body, message):
 ```
 
 ## Installation
----
+
 You can install Ternya either via the Python Package Index (PyPI) or from source.
 To install using pip:
 ```
@@ -58,9 +59,8 @@ To install using source:
 python setup.py install
 ```
 
-## Documentation
----
+## Detail Documentation
+
 
 ## Chinese Version
----
 

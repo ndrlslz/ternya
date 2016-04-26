@@ -1,4 +1,4 @@
-from ternya.ternya import Ternya
+from ternya import Ternya
 from multiprocessing import Process
 
 if __name__ == "__main__":

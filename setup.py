@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
         name="ternya",
-        version="0.1.1",
+        version="0.1.2",
         author="ndrlslz",
         author_email="ndrlslz@163.com",
         keywords="openstack notification",

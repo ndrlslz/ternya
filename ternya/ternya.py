@@ -24,7 +24,7 @@ class Ternya:
 
     *Example usage*::
 
-        >>> from ternya.ternya import Ternya
+        >>> from ternya import Ternya
         >>>
         >>> if __name__ == "__main__":
         >>>     ternya = Ternya()
@@ -34,7 +34,7 @@ class Ternya:
     If you use ternya in your project, you need to start a process to start ternya.
     *Example usage*::
     
-        >>> from ternya.ternya import Ternya
+        >>> from ternya import Ternya
         >>> from multiprocessing import Process
         >>>
         >>> if __name__ == "__main__":

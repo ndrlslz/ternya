@@ -13,6 +13,13 @@ ternya is a openstack notification library for python.
 
 The aim of ternya is to receive openstack notification and deal with notification easily.
 
+## Feature
+
+* Flexible to receive openstack notification, it controlled by config file.
+
+* Inject service logic according to use annotation. and annotation support wildcard.
+
+* The ability to auto reconnect openstack mq
 
 ## Requirements
 
@@ -61,6 +68,7 @@ python setup.py install
 
 ## Detail Documentation
 
+[detail doc](https://github.com/ndrlslz/ternya/tree/master/docs)
 
 ## Chinese Version
 

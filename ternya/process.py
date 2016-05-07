@@ -21,20 +21,7 @@ log = logging.getLogger(__name__)
 class ProcessFactory:
     @staticmethod
     def process(openstack_component):
-        if openstack_component == Openstack.Nova:
-            return nova_process
-        elif openstack_component == Openstack.Cinder:
-            return cinder_process
-        elif openstack_component == Openstack.Neutron:
-            return neutron_process
-        elif openstack_component == Openstack.Glance:
-            return glance_process
-        elif openstack_component == Openstack.Swift:
-            return swift_process
-        elif openstack_component == Openstack.Keystone:
-            return keystone_process
-        elif openstack_component == Openstack.Heat:
-            return heat_process
+        return process_mapping[openstack_component]
 
 
 def nova_process(body, message):
@@ -252,6 +239,16 @@ def default_process(body, message):
     log.debug("event_type:" + event_type)
     log.debug(body)
 
+
+process_mapping = {
+    Openstack.Nova: nova_process,
+    Openstack.Cinder: cinder_process,
+    Openstack.Neutron: neutron_process,
+    Openstack.Glance: glance_process,
+    Openstack.Swift: swift_process,
+    Openstack.Keystone: keystone_process,
+    Openstack.Heat: heat_process,
+}
 
 # define default method to deal with event_type that appear a lot of times.
 # customer can override it if need.

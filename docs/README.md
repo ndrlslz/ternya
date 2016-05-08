@@ -8,7 +8,7 @@
 
 <h2 id="config">How to Configure file</h2>
 
-### There is a example config file:
+### There is an example config file:
 [example config file](https://github.com/ndrlslz/ternya/blob/master/config.ini)
 
 ### Detail information

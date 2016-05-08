@@ -2,14 +2,14 @@
 
 | Version    | 0.1.2  |
 | --------   | -----  |
-| Blog       |        |
-| Download   | https://pypi.python.org/pypi/ternya   |
-| Source     | https://github.com/ndrlslz/ternya     |
-| Keywords   | openstack, notification, python, amqp |
+| Blog       | http://ndrlslz.github.io/2016/05/07/Ternya/     |
+| Download   | https://pypi.python.org/pypi/ternya             |
+| Source     | https://github.com/ndrlslz/ternya               |
+| Keywords   | openstack, notification, python, amqp           |
 
 ## About
 
-ternya is a openstack notification library for python.
+ternya is an openstack notification library for python.
 
 The aim of ternya is to receive openstack notification and deal with notification easily.
 
@@ -66,9 +66,10 @@ To install using source:
 python setup.py install
 ```
 
-## Detail Documentation
+## Detail Document
 
-[detail doc](https://github.com/ndrlslz/ternya/tree/master/docs)
+[Detail document](https://github.com/ndrlslz/ternya/tree/master/docs)
 
 ## Chinese Version
 
+[Chinese document](http://ndrlslz.github.io/2016/05/07/Ternya/)

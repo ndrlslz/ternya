@@ -32,22 +32,21 @@ for example. assume your project struct like below:
      |-- my_process_four.py
   ```
   1. packages_scan =
-
    in this way, ternya will scan all python files under project root directory. this is not recommended
+
   2. packages_scan = process
-
    in this way, ternya will scan my_process_two.py and my_process_threee.py
+
   3. packages_scan = process.sub_process
-
    in this way, ternya will scan my_process_three.py
-  4. packages_scan = process.sub_process;process1
 
+  4. packages_scan = process.sub_process;process1
    in this way, ternya will scan my_process_three.py and my_process_four.py
 
   you need to set this to include all your process method that deal with openstack notification
 but scan less packages is better.
 
-* **mq_use:r** openstack mq server username
+* **mq_user:** openstack mq server username
 
 * **mq_password:** openstack mq server password
 
@@ -55,7 +54,7 @@ but scan less packages is better.
 
 * **listen_notification:** whether to receive notification for each openstack component
 
-* **mq_consumer_count:** how much consumer to connect one queue.
+* **mq_consumer_count** how much consumer to connect one queue.
 
   if count >=2 queue will use round-roubin policy to send message to consumers.
 

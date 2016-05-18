@@ -31,21 +31,21 @@ for example. assume your project struct like below:
   `-- process1
      |-- my_process_four.py
   ```
-  1. packages_scan =
+  1.packages_scan =
 
-   in this way, ternya will scan all python files under project root directory. this is not recommended
+    in this way, ternya will scan all python files under project root directory. this is not recommended
 
-  2. packages_scan = process
+  2.packages_scan = process
 
-   in this way, ternya will scan my_process_two.py and my_process_threee.py
+    in this way, ternya will scan my_process_two.py and my_process_threee.py
 
-  3. packages_scan = process.sub_process
+  3.packages_scan = process.sub_process
 
-   in this way, ternya will scan my_process_three.py
+    in this way, ternya will scan my_process_three.py
 
-  4. packages_scan = process.sub_process;process1
+  4.packages_scan = process.sub_process;process1
 
-   in this way, ternya will scan my_process_three.py and my_process_four.py
+    in this way, ternya will scan my_process_three.py and my_process_four.py
 
   you need to set this to include all your process method that deal with openstack notification
 but scan less packages is better.

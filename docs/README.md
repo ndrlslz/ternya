@@ -13,9 +13,9 @@
 
 ### Detail information
 
-* **project_abspath** point the absolute path of your project root directory
+* **project_abspath:** point the absolute path of your project root directory
 
-* **packages_scan** python packages where you put the method that deal with openstack notification.
+* **packages_scan:** python packages where you put the method that deal with openstack notification.
 
   ternya will scan all python files under the package you point. multiple package can join with ';'
 
@@ -31,30 +31,31 @@ for example. assume your project struct like below:
   `-- process1
      |-- my_process_four.py
   ```
-1. packages_scan =
+  1. packages_scan =
 
    in this way, ternya will scan all python files under project root directory. this is not recommended
-2. packages_scan = process
+  2. packages_scan = process
 
    in this way, ternya will scan my_process_two.py and my_process_threee.py
-3. packages_scan = process.sub_process
+  3. packages_scan = process.sub_process
 
    in this way, ternya will scan my_process_three.py
-4. packages_scan = process.sub_process;process1
+  4. packages_scan = process.sub_process;process1
 
    in this way, ternya will scan my_process_three.py and my_process_four.py
-you need to set this to include all your process method that deal with openstack notification
+
+  you need to set this to include all your process method that deal with openstack notification
 but scan less packages is better.
 
-* **mq_user** openstack mq server username
+* **mq_use:r** openstack mq server username
 
-* **mq_password** openstack mq server password
+* **mq_password:** openstack mq server password
 
-* **mq_host** openstack mq server host
+* **mq_host:** openstack mq server host
 
-* **listen_notification** whether to receive notification for each openstack component
+* **listen_notification:** whether to receive notification for each openstack component
 
-* **mq_consumer_count** how much consumer to connect one queue.
+* **mq_consumer_count:** how much consumer to connect one queue.
 
   if count >=2 queue will use round-roubin policy to send message to consumers.
 

@@ -112,7 +112,7 @@ class Ternya:
 
         :param mq: class ternya.mq.MQ
         """
-        if not enable_component_notification(self.config, Openstack.Nova):
+        if not self.enable_component_notification(Openstack.Nova):
             log.debug("disable listening nova notification")
             return
 
@@ -131,7 +131,7 @@ class Ternya:
 
         :param mq: class ternya.mq.MQ
         """
-        if not enable_component_notification(self.config, Openstack.Cinder):
+        if not self.enable_component_notification(Openstack.Cinder):
             log.debug("disable listening cinder notification")
             return
 
@@ -151,7 +151,7 @@ class Ternya:
 
         :param mq: class ternya.mq.MQ
         """
-        if not enable_component_notification(self.config, Openstack.Neutron):
+        if not self.enable_component_notification(Openstack.Neutron):
             log.debug("disable listening neutron notification")
             return
 
@@ -171,7 +171,7 @@ class Ternya:
 
         :param mq: class ternya.mq.MQ
         """
-        if not enable_component_notification(self.config, Openstack.Glance):
+        if not self.enable_component_notification(Openstack.Glance):
             log.debug("disable listening glance notification")
             return
 
@@ -191,7 +191,7 @@ class Ternya:
 
         :param mq: class ternya.mq.MQ
         """
-        if not enable_component_notification(self.config, Openstack.Swift):
+        if not self.enable_component_notification(Openstack.Swift):
             log.debug("disable listening swift notification")
             return
 
@@ -211,7 +211,7 @@ class Ternya:
 
         :param mq: class ternya.mq.MQ
         """
-        if not enable_component_notification(self.config, Openstack.Keystone):
+        if not self.enable_component_notification(Openstack.Keystone):
             log.debug("disable listening keystone notification")
             return
 
@@ -231,7 +231,7 @@ class Ternya:
 
         :param mq: class ternya.mq.MQ
         """
-        if not enable_component_notification(self.config, Openstack.Heat):
+        if not self.enable_component_notification(Openstack.Heat):
             log.debug("disable listening heat notification")
             return
 
@@ -241,6 +241,23 @@ class Ternya:
                                ProcessFactory.process(Openstack.Heat))
 
         log.debug("enable listening openstack heat notification.")
+
+    def enable_component_notification(self, openstack_component):
+        """
+        Check if customer enable openstack component notification.
+
+        :param openstack_component: Openstack component type.
+        """
+        openstack_component_mapping = {
+            Openstack.Nova: self.config.listen_nova_notification,
+            Openstack.Cinder: self.config.listen_cinder_notification,
+            Openstack.Neutron: self.config.listen_neutron_notification,
+            Openstack.Glance: self.config.listen_glance_notification,
+            Openstack.Swift: self.config.listen_swift_notification,
+            Openstack.Keystone: self.config.listen_keystone_notification,
+            Openstack.Heat: self.config.listen_heat_notification
+        }
+        return openstack_component_mapping[openstack_component]
 
 
 class TernyaConnection:
@@ -271,26 +288,3 @@ class TernyaConnection:
                         log.error("connect failed, ternya will try it after 10 seconds")
                         time.sleep(10)
                 self.connection = re_conn
-
-
-def enable_component_notification(config, openstack_component):
-    """
-    Check if customer enable openstack component notification.
-
-    :param config: customer config information.
-    :param openstack_component: Openstack component type.
-    """
-    if openstack_component == Openstack.Nova:
-        return True if config.listen_nova_notification else False
-    elif openstack_component == Openstack.Cinder:
-        return True if config.listen_cinder_notification else False
-    elif openstack_component == Openstack.Neutron:
-        return True if config.listen_neutron_notification else False
-    elif openstack_component == Openstack.Glance:
-        return True if config.listen_glance_notification else False
-    elif openstack_component == Openstack.Swift:
-        return True if config.listen_swift_notification else False
-    elif openstack_component == Openstack.Keystone:
-        return True if config.listen_keystone_notification else False
-    elif openstack_component == Openstack.Heat:
-        return True if config.listen_heat_notification else False
